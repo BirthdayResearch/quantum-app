@@ -1,0 +1,215 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Space+Grotesk&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Dark mode UI colors */
+  --ui-dark-card-bg: linear-gradient(
+    144deg,
+    rgba(22, 22, 22, 0.5) -0.38%,
+    rgba(2, 2, 2, 0.5) 100.17%
+  );
+  --ui-dark-card-section: linear-gradient(
+    144.57deg,
+    rgba(124, 124, 124, 0.1) -0.38%,
+    rgba(74, 74, 74, 0.1) 98.45%
+  );
+  --ui-dark-button-hover: linear-gradient(
+    144deg,
+    rgba(46, 46, 46, 0.5) -0.38%,
+    rgba(18, 18, 18, 0.5) 100.17%
+  );
+  --ui-dark-button-pressed: linear-gradient(
+    144deg,
+    rgba(46, 46, 46, 0.95) -0.38%,
+    rgba(18, 18, 18, 0.95) 100.17%
+  );
+  --ui-dark-cta-hover: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15)
+    ),
+    #ffffff;
+  --ui-dark-cta-pressed: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    #ffffff;
+
+  /* Light mode UI colors */
+  --ui-light-card-bg: linear-gradient(
+    144deg,
+    rgba(247, 247, 247, 0.5) -0.37%,
+    rgba(241, 239, 239, 0.5) 100.17%
+  );
+
+  --ui-dark-gradient-1: linear-gradient(
+    144deg,
+    rgba(46, 46, 46, 0.2) -0.38%,
+    rgba(18, 18, 18, 0.2) 100.17%
+  );
+
+  --ui-dark-gradient-2: linear-gradient(
+    144deg,
+    rgba(46, 46, 46, 0.4) -0.38%,
+    rgba(18, 18, 18, 0.4) 100.17%
+  );
+
+  --ui-dark-gradient-3: linear-gradient(
+    144deg,
+    rgba(29, 29, 29, 0.3) -0.38%,
+    rgba(28, 28, 28, 0.3) 100.17%,
+    rgba(28, 28, 28, 0.3) 100.17%
+  );
+
+  /* Accent gradients */
+  --accent-gradient-1: linear-gradient(
+    72.57deg,
+    #ec008c 17.15%,
+    #5b10ff 89.41%,
+    #0468d6 102.56%
+  );
+  --accent-gradient-2: linear-gradient(
+    261.07deg,
+    #ec008c -0.26%,
+    #5b10ff 79.46%,
+    #082fd4 100%
+  );
+  --accent-gradient-3: linear-gradient(
+    90.66deg,
+    #42f9c2 -6.44%,
+    #082fd4 76.25%
+  );
+  --accent-gradient-4: linear-gradient(270deg, #7ff5c5 0%, #1530cc 100%);
+  --accent-gradient-5: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    linear-gradient(72.57deg, #ec008c 17.15%, #5b10ff 89.41%, #0468d6 102.56%);
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@layer base {
+  html {
+    /* Removes tap highlight on mobile */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .fill-bg-gradient-1 {
+    background: var(--accent-gradient-1) border-box;
+  }
+  .bg-gradient-2 {
+    background-image: var(--accent-gradient-2);
+  }
+  .fill-bg-gradient-5 {
+    background: var(--accent-gradient-5) border-box;
+  }
+  .dark-card-bg {
+    background: var(--ui-dark-card-bg) border-box;
+  }
+  .dark-card-bg-image {
+    background-image: var(--ui-dark-card-bg);
+  }
+  .dark-section-bg {
+    background: var(--ui-dark-card-section) border-box;
+  }
+  .dark-btn-hover {
+    background: var(--ui-dark-button-hover) border-box;
+  }
+  .dark-btn-pressed {
+    background: var(--ui-dark-button-pressed) border-box;
+  }
+  .dark-bg-gradient-1 {
+    background: linear-gradient(#000000, #000000) padding-box,
+      var(--accent-gradient-1) border-box;
+  }
+  .dark-cta-hover {
+    background: var(--ui-dark-cta-hover);
+  }
+  .dark-cta-pressed {
+    background: var(--ui-dark-cta-pressed);
+  }
+
+  /* To style :before of element and add gradient border with transparent background */
+  .dark-gradient-2 {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: var(--accent-gradient-2);
+    mask: linear-gradient(#000000 0 0) content-box, linear-gradient(#000000 0 0);
+    -webkit-mask: linear-gradient(#000000 0 0) content-box,
+      linear-gradient(#000000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+
+  .light-card-bg {
+    background: var(--ui-light-card-bg) border-box;
+  }
+  .light-bg-gradient-1 {
+    background: linear-gradient(#ffffff, #ffffff) padding-box,
+      var(--accent-gradient-1) border-box;
+  }
+  .bg-dark-gradient-1 {
+    background: var(--ui-dark-gradient-1);
+  }
+  .bg-dark-image-gradient-1 {
+    background-image: var(--ui-dark-gradient-1);
+  }
+  .bg-dark-gradient-2 {
+    background: var(--ui-dark-gradient-2);
+  }
+  .bg-dark-grdient-3 {
+    background: var(--accent-gradient-3);
+  }
+  .dark-bg-card-section {
+    background: var(--ui-dark-card-section);
+    opacity: var(--tw-bg-opacity);
+  }
+  .bg-dark-gradient-3 {
+    background: var(--ui-dark-gradient-3);
+  }
+  .hover-text-gradient-1 {
+    background-image: linear-gradient(90deg, #ff00ff 0%, #ec0c8d 100.04%);
+  }
+  .text-dark-gradient-3 {
+    background: var(--accent-gradient-3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(129, 129, 129);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: rgb(55 47 71) 0px 0px 5px inset;
+  border-radius: 10px;
+}

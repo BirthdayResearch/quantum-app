@@ -1,0 +1,28 @@
+# Define individuals that are responsible for code in a repository.
+# More details are here: https://help.github.com/articles/about-codeowners/
+
+/.husky/                                        @thedoublejay
+/.github/                                       @thedoublejay
+
+public                                          @thedoublejay
+apps/web                                        @thedoublejay @kyleleow @fullstackninja864 @lykalabrada @greggtan @pierregee
+packages                                        @thedoublejay @weiyuan95 @lykalabrada @pierregee @Abhishekkochar
+
+.codeclimate.yml                                @thedoublejay
+.editorconfig                                   @thedoublejay
+.eslintignore                                   @thedoublejay
+.eslintrc                                       @thedoublejay
+.gitignore                                      @thedoublejay
+.imgbotconfig                                   @thedoublejay
+.lintstagedrc.js                                @thedoublejay
+.nvmrc                                          @thedoublejay
+
+codecov.yml                                     @thedoublejay
+docker-compose.yml                              @thedoublejay
+LICENSE                                         @thedoublejay
+package.json                                    @thedoublejay
+package-lock.json                               @thedoublejay
+postcss.config.js                               @thedoublejay
+README.md                                       @thedoublejay
+tailwind.config.js                              @thedoublejay
+tsconfig.json                                   @thedoublejay

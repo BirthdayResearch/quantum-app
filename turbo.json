@@ -1,0 +1,103 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "write": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    },
+    "generate": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "build": {
+      "inputs": ["tsconfig.json", "tsconfig.build.json", "src/**"],
+      "outputs": ["dist/**", ".next/**"],
+      "dependsOn": [
+        "^build",
+        "generate:client",
+        "generate:schema",
+        "generate:prisma"
+      ]
+    },
+    "build:docker": {
+      "inputs": ["tsconfig.json", "tsconfig.build.json", "src/**"],
+      "dependsOn": ["^build"]
+    },
+    "playground:start": {
+      "cache": false
+    },
+    "migration:deploy": {
+      "cache": false
+    },
+    "docker:pull": {
+      "inputs": ["tsconfig.json", "tsconfig.build.json", "src/**"],
+      "dependsOn": ["^build"]
+    },
+    "generate:prisma": {
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": ["node_modules/@prisma/client"]
+    },
+    "generate:schema": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"]
+    },
+    "generate:client": {
+      "outputs": ["generated/**"],
+      "dependsOn": ["^build", "^generate:schema"]
+    },
+    "generate:contract-types": {
+      "inputs": ["contracts/**/*.sol"],
+      "outputs": ["artifacts", "cache", "generated"],
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "inputs": ["src/**", "src/**/*.unit.ts", "tests-i9n/**", "tests-e2e/**"],
+      "dependsOn": [
+        "^build",
+        "^build:docker",
+        "build:docker",
+        "generate:client",
+        "generate:schema",
+        "docker:pull"
+      ]
+    },
+    "test:unit": {
+      "inputs": ["src/**", "src/**/*.unit.ts"],
+      "dependsOn": ["^build", "generate:client", "generate:schema"]
+    },
+    "test:i9n": {
+      "inputs": ["src/**", "tests-i9n/**"],
+      "dependsOn": [
+        "^build",
+        "^build:docker",
+        "build:docker",
+        "generate:client",
+        "generate:schema",
+        "docker:pull"
+      ]
+    },
+    "test:e2e": {
+      "inputs": ["src/**", "tests-e2e/**"],
+      "dependsOn": [
+        "build:docker",
+        "^build:docker",
+        "generate:client",
+        "generate:schema"
+      ]
+    },
+    "test:hardhat": {
+      "inputs": ["src/**", "tests/**"],
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {}
+  }
+}

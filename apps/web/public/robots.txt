@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /*?network=*
+
+# Host
+Host: https://quantumbridge.app
+
+# Sitemaps
+Sitemap: https://quantumbridge.app/sitemap.xml

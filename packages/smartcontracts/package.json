@@ -1,0 +1,86 @@
+{
+  "private": true,
+  "name": "smartcontracts",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "postinstall": "pnpm run generate:contract-types",
+    "build": "pnpm run generate:contract-types && tsc -b ./tsconfig.build.json",
+    "build:docker": "docker build -t bridge-packages/hardhatnetwork:0.0.0 .",
+    "test": "jest --coverage",
+    "test:hardhat": "pnpm run generate:contract-types && hardhat test --config ./src/hardhat.config.ts",
+    "clean": "rm -rf dist && rm -f tsconfig.build.tsbuildinfo && hardhat clean --config ./src/hardhat.config.ts",
+    "generate:contract-types": "hardhat compile --config ./src/hardhat.config.ts",
+    "lint": "eslint . --fix"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@birthdayresearch"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "check-file/filename-naming-convention": "off",
+          "import/no-default-export": "off",
+          "no-console": "off",
+          "no-underscore-dangle": "off"
+        }
+      }
+    ]
+  },
+  "jest": {
+    "displayName": "test:hardhat",
+    "preset": "@birthdayresearch/sticky-turbo-jest",
+    "reporters": [
+      "default"
+    ],
+    "testTimeout": 300000,
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/test"
+    ]
+  },
+  "devDependencies": {
+    "@birthdayresearch/eslint-config": "^0.5.6",
+    "@birthdayresearch/sticky-testcontainers": "^0.5.6",
+    "@birthdayresearch/sticky-turbo-jest": "^0.5.6",
+    "@birthdayresearch/sticky-typescript": "^0.5.6",
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/providers": "5.7.2",
+    "@nomicfoundation/hardhat-chai-matchers": "1.0.6",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@openzeppelin/contracts": "4.8.2",
+    "@openzeppelin/contracts-upgradeable": "4.8.2",
+    "@typechain/ethers-v5": "10.2.0",
+    "@types/chai": "4.3.4",
+    "@types/mocha": "10.0.1",
+    "base64-sol": "1.1.0",
+    "chai": "4.3.7",
+    "cross-fetch": "^3.1.5",
+    "dotenv": "^16.0.3",
+    "ethers": "~5.7.2",
+    "hardhat": "2.12.7",
+    "mocha": "10.2.0",
+    "ts-node": "10.9.1"
+  },
+  "prettier": "@birthdayresearch/sticky-prettier",
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
+  }
+}

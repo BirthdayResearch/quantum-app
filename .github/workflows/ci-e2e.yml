@@ -1,0 +1,70 @@
+name: CI E2E
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  main:
+    name: Cypress
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
+      matrix:
+        containers: [1]
+    steps:
+      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+
+      - name: Setup Playground
+        run: docker-compose -f docker-compose.yml up -d
+
+      - uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # tag=v2.2.4
+        with:
+          version: 7.30.0
+      - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        with:
+          node-version: 16
+
+      # install specific version of chrome
+      - name: Install latest Google Chrome
+        run: |
+          wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+          sudo dpkg -i "google-chrome-stable_current_amd64.deb"
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: .github/workflows/ci/wait-for http://localhost:3001/_actuator/probes/liveness -t 240
+      - run: .github/workflows/ci/wait-for http://localhost:3002/_actuator/probes/liveness -t 240
+      - run: .github/workflows/ci/wait-for http://localhost:19551/ping -t 240
+
+      ## Implement ping on server side to do full e2e
+
+      - uses: cypress-io/github-action@96268482322bc63c76561c602a84be842c527dbc # v5.5.1
+        with:
+          config-file: cypress.config.js
+          install: false
+          record: true
+          parallel: true
+          start: pnpm dev
+          browser: chrome
+          spec: cypress/e2e/**
+          tag: ${{ github.event_name }}
+          working-directory: ./apps/web
+        env:
+          CYPRESS_E2E: true
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: codecov/codecov-action@d9f34f8cd5cb3b3eb79b3e4b5dae3a16df499a70 # tag=v3.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
