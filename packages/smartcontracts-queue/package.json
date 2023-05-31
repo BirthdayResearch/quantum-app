@@ -1,0 +1,78 @@
+{
+  "private": true,
+  "name": "smartcontracts-queue",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "postinstall": "pnpm run generate:contract-types",
+    "build": "pnpm run generate:contract-types && tsc -b ./tsconfig.build.json",
+    "build:docker": "docker build -t bridge-packages/hardhatnetwork-queue:0.0.0 .",
+    "generate:contract-types": "hardhat compile --config ./src/hardhat.config.ts",
+    "test": "jest --coverage",
+    "clean": "rm -rf dist && rm -f tsconfig.build.tsbuildinfo && hardhat clean --config ./src/hardhat.config.ts",
+    "test:hardhat": "pnpm run generate:contract-types && hardhat test --config ./src/hardhat.config.ts",
+    "lint": "eslint . --fix"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@birthdayresearch"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "check-file/filename-naming-convention": "off",
+          "import/no-default-export": "off",
+          "no-console": "off",
+          "no-underscore-dangle": "off",
+          "import/extensions": "off"
+        }
+      }
+    ]
+  },
+  "jest": {
+    "displayName": "test:hardhat",
+    "preset": "@birthdayresearch/sticky-turbo-jest",
+    "reporters": [
+      "default"
+    ],
+    "testTimeout": 300000,
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/test"
+    ]
+  },
+  "devDependencies": {
+    "@birthdayresearch/eslint-config": "^0.5.14",
+    "@birthdayresearch/sticky-testcontainers": "^0.5.14",
+    "@birthdayresearch/sticky-turbo-jest": "^0.5.14",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "hardhat": "2.14.0",
+    "@openzeppelin/contracts": "4.8.3",
+    "@openzeppelin/contracts-upgradeable": "4.8.3",
+    "ethers": "~5.7.2",
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/providers": "5.7.2",
+    "@birthdayresearch/sticky-typescript": "^0.5.14",
+    "dotenv": "^16.0.3",
+    "cross-fetch": "^3.1.6"
+  },
+  "prettier": "@birthdayresearch/sticky-prettier",
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
+  }
+}

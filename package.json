@@ -10,23 +10,23 @@
     "playground:start": "turbo run playground:start",
     "build:docker": "turbo run build:docker",
     "test": "turbo run test",
-    "test:hardhat": "turbo run test:hardhat --filter=./packages/smartcontracts",
+    "test:hardhat": "turbo run test:hardhat",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint -- --fix",
     "format": "prettier --write .",
     "migration:deploy": "turbo run migration:deploy"
   },
   "dependencies": {
-    "@waveshq/standard-defichain-jellyfishsdk": "^0.46.0"
+    "@waveshq/standard-defichain-jellyfishsdk": "^0.51.2"
   },
   "devDependencies": {
-    "@birthdayresearch/sticky-turbo": "^0.5.6",
+    "@birthdayresearch/sticky-turbo": "^0.5.14",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.0"
+    "lint-staged": "^13.2.2"
   },
   "engines": {
     "node": "^18.0.0 || ^16.16.0",
-    "pnpm": ">=7.30.0"
+    "pnpm": ">=8.5.0"
   },
-  "packageManager": "pnpm@7.30.0"
+  "packageManager": "pnpm@8.5.0"
 }

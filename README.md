@@ -159,6 +159,14 @@ BridgeV1 Contract address: [0x7bdbd5675bad2653cba9bc0e09564dd8d7b53957](https://
 
 BridgeProxy Contract address: [0x54346d39976629b65ba54eac1c9ef0af3be1921b](https://etherscan.io/address/0x54346d39976629b65ba54eac1c9ef0af3be1921b)
 
+### BridgeQueue
+
+BridgeQueue Contract address: [0x180520fffecb138a042b473aa131673deff40cdb](https://etherscan.io/address/0x180520fffecb138a042b473aa131673deff40cdb)
+
+### BridgeQueueProxy
+
+BridgeQueueProxy Contract address: [0xba188cdec7b48e6f1079256208b96f067e385ff1](https://etherscan.io/address/0xba188cdec7b48e6f1079256208b96f067e385ff1)
+
 ## Testnet Addresses
 
 ### MWBTC
