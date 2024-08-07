@@ -17,16 +17,16 @@
     "migration:deploy": "turbo run migration:deploy"
   },
   "dependencies": {
-    "@waveshq/standard-defichain-jellyfishsdk": "^0.51.2"
+    "@waveshq/standard-defichain-jellyfishsdk": "^2.3.0"
   },
   "devDependencies": {
-    "@birthdayresearch/sticky-turbo": "^0.5.14",
+    "@stickyjs/turbo": "^1.3.4",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.2"
+    "lint-staged": "^14.0.1"
   },
   "engines": {
-    "node": "^18.0.0 || ^16.16.0",
-    "pnpm": ">=8.5.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=8.6.12"
   },
-  "packageManager": "pnpm@8.5.0"
+  "packageManager": "pnpm@8.6.12"
 }

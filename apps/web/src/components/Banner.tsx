@@ -8,15 +8,16 @@ export default function Banner(): JSX.Element {
       </div>
       <div className="pl-4">
         <span className="inline-block md:inline">
-          Make sure you are visiting&nbsp;
+          {`Quantum Bridge will enter maintenance mode indefinitely, please visit
+          Birthday Research's Official Twitter account for the`}
+          &nbsp;
         </span>
         <a
-          href="https://quantumbridge.app"
+          href="https://x.com/BirthdayDev/status/1813165248980869335"
           className="inline font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#42F9C2] to-[#082FD4]"
         >
-          https://quantumbridge.app&nbsp;
+          full information&nbsp;
         </a>
-        – check the URL correctly.{" "}
       </div>
     </div>
   );

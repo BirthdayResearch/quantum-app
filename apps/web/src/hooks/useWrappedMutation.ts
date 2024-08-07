@@ -8,7 +8,7 @@ import BASE_URLS from "../config/networkUrl";
  * @param mutation
  */
 const useWrappedMutation = <U, V extends BaseQueryFn, W>(
-  mutation: UseMutation<MutationDefinition<U, V, never, W, string>>
+  mutation: UseMutation<MutationDefinition<U, V, never, W, string>>,
 ): ReturnType<UseMutation<MutationDefinition<U, V, never, W, string>>> => {
   const [mutate, status] = mutation();
   const { networkEnv } = useNetworkEnvironmentContext();

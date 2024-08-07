@@ -12,7 +12,7 @@ export default function AlertInfoMessage({
     <div
       className={clsx(
         "flex items-center border border-warning rounded-lg",
-        containerStyle
+        containerStyle,
       )}
     >
       <FiAlertTriangle size={24} className="shrink-0 text-warning" />

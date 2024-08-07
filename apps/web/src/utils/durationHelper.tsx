@@ -44,7 +44,7 @@ type CustomLabel = {
 
 export function getDuration(
   seconds: number,
-  customLabel?: CustomLabel
+  customLabel?: CustomLabel,
 ): string {
   const { y, m, d, h, min, s } = secondsToTime(seconds);
   const yDisplay = y > 0 ? `${y}y` : "";

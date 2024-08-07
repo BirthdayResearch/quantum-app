@@ -1,4 +1,3 @@
-import { TestToken } from '../dist';
 import {
   BridgeQueue,
   BridgeQueue__factory,
@@ -8,6 +7,7 @@ import {
   HardhatNetwork,
   HardhatNetworkContainer,
   StartedHardhatNetworkContainer,
+  TestToken,
   TestToken__factory,
 } from '../src';
 

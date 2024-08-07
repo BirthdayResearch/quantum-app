@@ -1,0 +1,46 @@
+#!/bin/sh
+# Takes care of spinning up a local db container and waiting for it to be ready prior to any prisma command that requires a database connection.
+# In terminal (/bridge), run `cd apps/server`
+# Run `./with-db generate` to generate the Prisma Client
+# Run `./with-db migrate dev` to migrate and apply database migrations in the development environment. 
+
+
+C='\033[1;36m' # Highlight - light cyan
+P='\033[1;35m' # Highlight - light purple
+N='\033[0m' # No color
+log() {
+  echo "${C}[$(date +"%F %T %Z")] ${P}$1${N}"
+}
+
+log "Spinning up local database..."
+
+# Start local dev db container with dev credentials
+POSTGRES_IMAGE=postgres:15.2
+POSTGRES_PORT=5432
+POSTGRES_DATABASE=bridge-db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+
+docker pull $POSTGRES_IMAGE
+docker start bridge-db || docker run -p $POSTGRES_PORT:$POSTGRES_PORT -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DATABASE=$POSTGRES_DATABASE -d --name $POSTGRES_DATABASE $POSTGRES_IMAGE
+printf "\n"
+
+# Wait for container to be ready
+until [ "$(docker inspect -f {{.State.Running}} bridge-db)" = "true" ]; do
+  log "Waiting for container to run..."
+  sleep 0.3;
+done;
+
+# Execute an arbitrary query to ensure db is ready
+until [[ $(docker exec bridge-db psql -U postgres -c "SELECT 'ready'" | grep ready) == *"ready"* ]]; do
+  log "Waiting for database to be ready..."
+  sleep 0.3;
+done;
+
+# Register env variable for prisma to connect to db
+export DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/$POSTGRES_DATABASE
+log "Database started - connection url: $DATABASE_URL"
+
+# Run prisma command
+npx prisma "$@"
+log "Finished!"

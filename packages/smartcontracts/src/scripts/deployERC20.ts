@@ -2,7 +2,7 @@ import { ethers, network } from 'hardhat';
 
 import { TestToken } from '../generated';
 
-// npx hardhat run --network goerli ./scripts/deployERC20.ts
+// npx hardhat run --network sepolia ./scripts/deployERC20.ts
 export async function tokenDeployment(): Promise<TestTokens> {
   const { chainId } = network.config;
   const ERC20 = await ethers.getContractFactory('TestToken');
@@ -11,7 +11,7 @@ export async function tokenDeployment(): Promise<TestTokens> {
   console.log('Test MUSDT token is deployed to ', mockTokenUSDT.address);
   if (chainId !== 1337) {
     console.log(
-      `To verify on Etherscan: npx hardhat verify --network goerli --contract contracts/TestToken.sol:TestToken ${mockTokenUSDT.address} MockUSDT MUSDT`,
+      `To verify on Etherscan: npx hardhat verify --network sepolia --contract contracts/TestToken.sol:TestToken ${mockTokenUSDT.address} MockUSDT MUSDT`,
     );
   }
   const mockTokenUSDC = await ERC20.deploy('MockUSDC', 'MUSDC');
@@ -19,7 +19,7 @@ export async function tokenDeployment(): Promise<TestTokens> {
   console.log('Test MUSDC token is deployed to ', mockTokenUSDC.address);
   if (chainId !== 1337) {
     console.log(
-      `To verify on Etherscan: npx hardhat verify --network goerli --contract contracts/TestToken.sol:TestToken ${mockTokenUSDC.address} MockUSDC MUSDC`,
+      `To verify on Etherscan: npx hardhat verify --network sepolia --contract contracts/TestToken.sol:TestToken ${mockTokenUSDC.address} MockUSDC MUSDC`,
     );
   }
   return { usdtContract: mockTokenUSDT, usdcContract: mockTokenUSDC };

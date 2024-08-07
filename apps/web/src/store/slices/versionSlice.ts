@@ -12,7 +12,7 @@ const versionSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(
       bridgeApi.endpoints.bridgeVersion.matchFulfilled,
-      (_, { payload }) => payload.v
+      (_, { payload }) => payload.v,
     );
   },
 });

@@ -1,8 +1,15 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { FetchArgs } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
-import { AddressDetails, BridgeSettings, BridgeVersion } from "types";
+import {
+  AddressDetails,
+  BridgeAnnouncement,
+  BridgeSettings,
+  BridgeVersion,
+  Queue,
+} from "types";
 import { HttpStatusCode } from "axios";
 import type { RootState } from "@store/reducers/rootReducer";
+import BigNumber from "bignumber.js";
 
 const staggeredBaseQueryWithBailOut = retry(
   async (args: string | FetchArgs, api, extraOptions) => {
@@ -21,7 +28,7 @@ const staggeredBaseQueryWithBailOut = retry(
   },
   {
     maxRetries: 0,
-  }
+  },
 );
 
 export const PATH_DFC_WALLET = "defichain/wallet";
@@ -115,6 +122,12 @@ export const bridgeApi = createApi({
         method: "GET",
       }),
     }),
+    bridgeBalances: builder.mutation<BridgeVersion, any>({
+      query: ({ baseUrl }) => ({
+        url: `${baseUrl}/balances`,
+        method: "GET",
+      }),
+    }),
     bridgeSettings: builder.query<BridgeSettings, any>({
       query: ({ baseUrl }) => ({
         url: `${baseUrl}/settings`,
@@ -155,6 +168,77 @@ export const bridgeApi = createApi({
         method: "GET",
       }),
       extraOptions: { maxRetries: 1 },
+    }),
+    bridgeAnnouncements: builder.query<BridgeAnnouncement[], any>({
+      query: ({ baseUrl }) => ({
+        url: `${baseUrl}/bridge/announcements`,
+      }),
+    }),
+    queueTransaction: builder.mutation<Queue, any>({
+      query: ({ baseUrl, txnHash }) => ({
+        url: `${baseUrl}/${PATH_ETHEREUM}/queue`,
+        body: {
+          transactionHash: txnHash,
+        },
+        method: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      }),
+      extraOptions: { maxRetries: 0 },
+    }),
+    verifyEthQueueTxn: builder.mutation<
+      { numberOfConfirmations: string; isConfirmed: boolean },
+      any
+    >({
+      query: ({ baseUrl, txnHash }) => ({
+        url: `${baseUrl}/${PATH_ETHEREUM}/queue/verify`,
+        body: {
+          transactionHash: txnHash,
+        },
+        method: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      }),
+      extraOptions: { maxRetries: 0 },
+    }),
+    getQueueTransaction: builder.query<Queue, any>({
+      query: ({ baseUrl, txnHash }) => ({
+        url: `${baseUrl}/${PATH_ETHEREUM}/queue/${txnHash}`,
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      }),
+      extraOptions: { maxRetries: 0 },
+    }),
+    getEVMTxnDetails: builder.query<
+      { id: string; symbol: string; amount: BigNumber; toAddress: string },
+      any
+    >({
+      query: ({ baseUrl, txnHash }) => ({
+        url: `${baseUrl}/${PATH_ETHEREUM}/transactionDetails?transactionHash=${txnHash}`,
+        method: "GET",
+      }),
+      extraOptions: { maxRetries: 1 },
+    }),
+    refund: builder.mutation<Queue, any>({
+      query: ({ baseUrl, txnHash }) => ({
+        url: `${baseUrl}/${PATH_ETHEREUM}/queue/refund`,
+        body: {
+          transactionHash: txnHash,
+        },
+        method: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      }),
+      extraOptions: { maxRetries: 0 },
     }),
   }),
 });

@@ -2,7 +2,6 @@
  * Hook to write `approve` function from specific ERC20 token contract
  */
 
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import {
   erc20ABI,
@@ -13,6 +12,8 @@ import {
 import { useContractContext } from "@contexts/ContractContext";
 import { Erc20Token } from "types";
 import Logging from "@api/logging";
+import { FormOptions, useNetworkContext } from "@contexts/NetworkContext";
+import { METAMASK_REJECT_MESSAGE } from "../constants";
 
 interface ApproveTokenI {
   tokenName: Erc20Token;
@@ -28,18 +29,40 @@ export default function useWriteApproveToken({
   setErrorMessage,
 }: ApproveTokenI) {
   const [refetchedBridgeFn, setRefetchedBridgeFn] = useState(false);
-  const { BridgeV1, Erc20Tokens } = useContractContext();
+  const { BridgeV1, BridgeQueue, Erc20Tokens } = useContractContext();
+  const { typeOfTransaction } = useNetworkContext();
 
   const erc20TokenContract = {
     address: Erc20Tokens[tokenName].address,
-    abi: erc20ABI,
+    abi:
+      tokenName === "USDT"
+        ? ([
+            {
+              constant: false,
+              inputs: [
+                { name: "_spender", type: "address" },
+                { name: "_value", type: "uint256" },
+              ],
+              name: "approve",
+              outputs: [],
+              payable: false,
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+          ] as any)
+        : erc20ABI,
   };
 
   // Prepare write (ERC20 token) contract for `approve` function
   const { config: tokenConfig } = usePrepareContractWrite({
     ...erc20TokenContract,
     functionName: "approve",
-    args: [BridgeV1.address, ethers.constants.MaxInt256],
+    args: [
+      typeOfTransaction === FormOptions.INSTANT
+        ? BridgeV1.address
+        : BridgeQueue.address,
+      BigInt(Number.MAX_SAFE_INTEGER),
+    ],
   });
 
   // Write (ERC20 token) contract for `approve` function
@@ -64,9 +87,9 @@ export default function useWriteApproveToken({
 
   useEffect(() => {
     if (writeApproveError || approveTxnError) {
-      if (writeApproveError?.message?.includes("User rejected request")) {
+      if (writeApproveError?.message?.includes(METAMASK_REJECT_MESSAGE)) {
         setErrorMessage(
-          "The transaction was rejected in your wallet. No funds have been transferred. Please retry your transaction."
+          "The transaction was rejected in your wallet. No funds have been transferred. Please retry your transaction.",
         );
       } else {
         setErrorMessage(writeApproveError?.message ?? approveTxnError?.message);
@@ -81,7 +104,7 @@ export default function useWriteApproveToken({
     writeApprove: () => {
       // ETH doesn not require approval
       if (
-        tokenConfig.address !== Erc20Tokens.ETH.address &&
+        tokenConfig.request.address !== Erc20Tokens.ETH.address &&
         tokenName !== "ETH"
       ) {
         writeApprove?.();

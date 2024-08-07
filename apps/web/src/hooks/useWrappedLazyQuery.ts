@@ -11,7 +11,7 @@ import BASE_URLS, { DEFICHAIN_WALLET_URL } from "../config/networkUrl";
  */
 const useWrappedLazyQuery = <U, V extends BaseQueryFn, W>(
   query: UseLazyQuery<QueryDefinition<U, V, never, W, string>>,
-  useDefiChainBase: boolean = false
+  useDefiChainBase: boolean = false,
 ): ReturnType<UseLazyQuery<QueryDefinition<U, V, never, W, string>>> => {
   const [trigger, result, lastPromiseInfo] = query();
   const { networkEnv } = useNetworkEnvironmentContext();

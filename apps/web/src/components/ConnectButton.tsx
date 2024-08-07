@@ -22,7 +22,7 @@ function PreConnectedButton({
             rounded-3xl border-[1.5px] border-transparent px-4 py-2 md:px-6 md:py-2.5 lg:px-6 lg:py-3
             before:absolute before:-z-[1] before:fill-bg-gradient-1 before:rounded-3xl
             before:transition-all before:duration-300 before:opacity-0 before:-inset-[1.5px]
-            hover:before:opacity-100 active:before:fill-bg-gradient-5 `
+            hover:before:opacity-100 active:before:fill-bg-gradient-5 `,
       )}
       onClick={onClick}
     >
@@ -49,7 +49,7 @@ function ConnectedButton({
       onClick={onClick}
       className={clsx(
         `hover:dark-btn-hover active:dark-btn-pressed dark-card-bg flex h-8 items-center rounded-[48px]
-        border-[0.5px] border-dark-card-stroke px-3 py-2 hover:border-transparent md:h-[52px] lg:h-12 md:pl-2.5 md:pr-7 lg:py-1.5`
+        border-[0.5px] border-dark-card-stroke px-3 py-2 hover:border-transparent md:h-[52px] lg:h-12 md:pl-2.5 md:pr-7 lg:py-1.5`,
       )}
     >
       <div className="hidden md:flex items-center">

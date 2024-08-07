@@ -1,6 +1,7 @@
 const BirthdayResearchSocialItems = [
   { id: "twitter_br", url: "https://twitter.com/BirthdayDev" },
   { id: "medium_br", url: "https://medium.com/@birthdayresearch" },
+  { id: "gitHub_br", url: "https://github.com/BirthdayResearch/quantum-app" },
 ];
 
 beforeEach(() => {

@@ -64,7 +64,7 @@ export function ThemeProvider({
       isLight: theme === "light",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [theme]
+    [theme],
   );
 
   return (

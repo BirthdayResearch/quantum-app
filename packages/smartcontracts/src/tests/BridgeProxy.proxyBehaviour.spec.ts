@@ -18,9 +18,8 @@ describe('Proxy behaviour', () => {
   };
 
   it("Upgrade and test contract's functionality and storage slots", async () => {
-    const { proxyBridge, testToken, defaultAdminSigner, withdrawSigner, communityAddress } = await loadFixture(
-      deployContracts,
-    );
+    const { proxyBridge, testToken, defaultAdminSigner, withdrawSigner, communityAddress } =
+      await loadFixture(deployContracts);
     // BridgeV1 should have version 1
     expect(await proxyBridge.version()).to.equal('1');
     // Supporting testToken with hard cap of 15

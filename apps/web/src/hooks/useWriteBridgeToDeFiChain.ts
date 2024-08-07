@@ -2,8 +2,7 @@
  * Hook to write `bridgeToDeFiChain` function from our own BridgeV1 contract
  */
 
-import BigNumber from "bignumber.js";
-import { ethers, utils } from "ethers";
+import { parseEther, parseUnits, toBytes, toHex } from "viem";
 import { useEffect } from "react";
 import {
   useContractWrite,
@@ -12,7 +11,8 @@ import {
 } from "wagmi";
 import { useContractContext } from "@contexts/ContractContext";
 import { Erc20Token } from "types";
-import { ETHEREUM_SYMBOL } from "../constants";
+import { FormOptions, useNetworkContext } from "@contexts/NetworkContext";
+import { ETHEREUM_SYMBOL, METAMASK_REJECT_MESSAGE } from "../constants";
 
 export interface EventErrorI {
   customErrorDisplay?:
@@ -23,9 +23,9 @@ export interface EventErrorI {
 
 interface BridgeToDeFiChainI {
   receiverAddress: string;
-  transferAmount: BigNumber;
+  transferAmount: number;
   tokenName: Erc20Token;
-  tokenDecimals: number | "gwei";
+  tokenDecimals: number;
   hasEnoughAllowance: boolean;
   onBridgeTxnSettled: () => void;
   setEventError: (error: EventErrorI | undefined) => void;
@@ -40,7 +40,8 @@ export default function useWriteBridgeToDeFiChain({
   onBridgeTxnSettled,
   setEventError,
 }: BridgeToDeFiChainI) {
-  const { BridgeV1, Erc20Tokens } = useContractContext();
+  const { BridgeV1, BridgeQueue, Erc20Tokens } = useContractContext();
+  const { typeOfTransaction } = useNetworkContext();
   const sendingFromETH = (tokenName as string) === ETHEREUM_SYMBOL;
 
   const handlePrepContractError = (err) => {
@@ -66,7 +67,7 @@ export default function useWriteBridgeToDeFiChain({
   const handleWriteContractError = (err) => {
     let customErrorMessage;
     let customErrorDisplay: EventErrorI["customErrorDisplay"];
-    if (err?.name === "UserRejectedRequestError") {
+    if (err?.message?.includes(METAMASK_REJECT_MESSAGE)) {
       customErrorDisplay = "UserRejectedRequestError";
       customErrorMessage =
         "The transaction was rejected in your wallet. No funds have been transferred. Please retry your transaction.";
@@ -81,21 +82,25 @@ export default function useWriteBridgeToDeFiChain({
   // Prepare write contract for `bridgeToDeFiChain` function
   const { config: bridgeConfig, refetch: refetchBridge } =
     usePrepareContractWrite({
-      address: BridgeV1.address,
-      abi: BridgeV1.abi,
+      address:
+        typeOfTransaction === FormOptions.INSTANT
+          ? BridgeV1.address
+          : BridgeQueue.address,
+      abi:
+        typeOfTransaction === FormOptions.INSTANT
+          ? BridgeV1.abi
+          : BridgeQueue.abi,
       functionName: "bridgeToDeFiChain",
       args: [
-        utils.hexlify(utils.toUtf8Bytes(receiverAddress)) as `0x${string}`,
+        toHex(new Uint8Array(toBytes(receiverAddress))),
         Erc20Tokens[tokenName].address,
         sendingFromETH
-          ? 0 // ETH amount is set inside overrides' `value` field
-          : utils.parseUnits(transferAmount.toFixed(), tokenDecimals),
+          ? 0 // ETH amount is set inside `value` field below
+          : parseUnits(`${transferAmount}`, tokenDecimals).toString(),
       ],
       ...(sendingFromETH
         ? {
-            overrides: {
-              value: ethers.utils.parseEther(transferAmount.toFixed()),
-            },
+            value: parseEther(`${transferAmount}`),
           }
         : {}),
       onError: handlePrepContractError,

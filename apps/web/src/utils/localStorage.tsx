@@ -6,7 +6,7 @@ export function getStorageItem<T>(key: string): T | null {
   }
   const prefixedKey = `${STORAGE_PREFIX_KEY}${key}`;
   const currentValue = JSON.parse(
-    localStorage.getItem(prefixedKey) || String(null)
+    localStorage.getItem(prefixedKey) || String(null),
   );
   return currentValue === null ? undefined : currentValue;
 }

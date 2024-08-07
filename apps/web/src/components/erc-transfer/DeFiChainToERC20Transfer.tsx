@@ -34,7 +34,7 @@ export default function DeFiChainToERC20Transfer({
   const { isMobile } = useResponsive();
 
   const [refundAddress, setRefundAddress] = useState<string>(
-    addressDetail?.refundAddress ?? ""
+    addressDetail?.refundAddress ?? "",
   );
 
   const [signedClaim, setSignedClaim] = useState<SignedClaim>();
@@ -50,7 +50,7 @@ export default function DeFiChainToERC20Transfer({
     <div
       className={clsx(
         "rounded-md mt-6 pt-4",
-        "md:mt-8 md:dark-bg-card-section bg-opacity-100 md:pb-4 md:px-6"
+        "md:mt-8 md:dark-bg-card-section bg-opacity-100 md:pb-4 md:px-6",
       )}
     >
       <div className="md:h-[60px]">

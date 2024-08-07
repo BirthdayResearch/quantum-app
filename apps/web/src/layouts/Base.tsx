@@ -9,12 +9,17 @@ import {
   siteTitle,
   website,
 } from "@components/siteInfo";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { goerli, hardhat, localhost, mainnet } from "wagmi/chains";
+import {
+  configureChains,
+  createConfig,
+  WagmiConfig,
+  sepolia,
+  mainnet,
+} from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
-import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { getInitialTheme, ThemeProvider } from "@contexts/ThemeProvider";
 import { NetworkEnvironmentProvider } from "@contexts/NetworkEnvironmentContext";
 import { NetworkProvider } from "@contexts/NetworkContext";
@@ -28,16 +33,17 @@ import SecuredStoreAPI from "@api/secure-storage";
 import Logging from "@api/logging";
 import { StorageProvider } from "@contexts/StorageContext";
 import { store } from "@store/store";
+import { QueueStorageProvider } from "@contexts/QueueStorageContext";
 import ScreenContainer from "../components/ScreenContainer";
 import { ETHEREUM_MAINNET_ID } from "../constants";
 import { MAINNET_CONFIG, TESTNET_CONFIG } from "../config";
 
 const metamask = new MetaMaskConnector({
-  chains: [mainnet, goerli, localhost, hardhat],
+  chains: [mainnet, sepolia],
 });
 
 const { chains } = configureChains(
-  [localhost, hardhat, goerli, mainnet],
+  [sepolia, mainnet],
   [
     jsonRpcProvider({
       rpc: (chain) => {
@@ -49,16 +55,18 @@ const { chains } = configureChains(
       },
     }),
     publicProvider(),
-  ]
+  ],
 );
 
-const client = createClient(
-  getDefaultClient({
+const config = createConfig(
+  getDefaultConfig({
     autoConnect: true,
     chains,
     appName,
     connectors: [metamask],
-  })
+    walletConnectProjectId:
+      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "",
+  }),
 );
 
 function Base({
@@ -129,29 +137,10 @@ function Base({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
-        {process.env.NODE_ENV !== "development" && (
-          <script
-            nonce="raygun"
-            async
-            defer
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `
-              !function(a,b,c,d,e,f,g,h){a.RaygunObject=e,a[e]=a[e]||function(){
-              (a[e].o=a[e].o||[]).push(arguments)},f=b.createElement(c),g=b.getElementsByTagName(c)[0],
-              f.async=1,f.src=d,g.parentNode.insertBefore(f,g),h=a.onerror,a.onerror=function(b,c,d,f,g){
-              h&&h(b,c,d,f,g),g||(g=new Error(b)),a[e].q=a[e].q||[],a[e].q.push({
-              e:g})}}(window,document,"script","//cdn.raygun.io/raygun4js/raygun.min.js","rg4js");
-
-              rg4js('apiKey', 'xgLWC9Tpzmeo88rziVxnHA');
-              rg4js('enableCrashReporting', true);`,
-            }}
-          />
-        )}
       </Head>
 
       <Provider store={store}>
-        <WagmiConfig client={client}>
+        <WagmiConfig config={config}>
           <ConnectKitProvider mode="dark" options={{ initialChainId: 0 }}>
             {mounted && (
               <NetworkProvider>
@@ -162,9 +151,11 @@ function Base({
                         <ContractProvider>
                           <ThemeProvider theme={initialTheme}>
                             <StorageProvider>
-                              <ScreenContainer isBridgeUp={isBridgeUp}>
-                                {children}
-                              </ScreenContainer>
+                              <QueueStorageProvider>
+                                <ScreenContainer isBridgeUp={isBridgeUp}>
+                                  {children}
+                                </ScreenContainer>
+                              </QueueStorageProvider>
                             </StorageProvider>
                           </ThemeProvider>
                         </ContractProvider>

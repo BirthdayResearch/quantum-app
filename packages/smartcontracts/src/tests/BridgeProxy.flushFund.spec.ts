@@ -7,9 +7,8 @@ import { toWei } from './testUtils/mathUtils';
 
 describe('Test flushMultipleTokenFunds functionalities', () => {
   it('Should flush the funds successfully when there is initial redundant funds', async () => {
-    const { proxyBridge, testToken, testToken2, flushReceiveSigner, defaultAdminSigner } = await loadFixture(
-      deployContracts,
-    );
+    const { proxyBridge, testToken, testToken2, flushReceiveSigner, defaultAdminSigner } =
+      await loadFixture(deployContracts);
     const ERC20 = await ethers.getContractFactory('TestToken');
     const testToken3 = await ERC20.deploy('Test3', 'T3');
     // Supporting testToken with hard cap of 20
@@ -57,9 +56,8 @@ describe('Test flushMultipleTokenFunds functionalities', () => {
   });
 
   it('Should flush the funds per token successfully when there is initial redundant funds per `tokenAddress`', async () => {
-    const { proxyBridge, testToken, testToken2, flushReceiveSigner, defaultAdminSigner } = await loadFixture(
-      deployContracts,
-    );
+    const { proxyBridge, testToken, testToken2, flushReceiveSigner, defaultAdminSigner } =
+      await loadFixture(deployContracts);
 
     // Supporting testToken with hard cap of 20
     await proxyBridge.addSupportedTokens(testToken.address, toWei('20'));
@@ -103,9 +101,8 @@ describe('Test flushMultipleTokenFunds functionalities', () => {
 
   describe('DEFAULT_ADMIN_ROLE', () => {
     it('Should be able to change `flushReceiveAddress`', async () => {
-      const { proxyBridge, defaultAdminSigner, flushReceiveSigner, arbitrarySigner } = await loadFixture(
-        deployContracts,
-      );
+      const { proxyBridge, defaultAdminSigner, flushReceiveSigner, arbitrarySigner } =
+        await loadFixture(deployContracts);
       expect(await proxyBridge.flushReceiveAddress()).to.be.equal(flushReceiveSigner.address);
       await expect(proxyBridge.connect(defaultAdminSigner).changeFlushReceiveAddress(arbitrarySigner.address))
         .to.emit(proxyBridge, 'CHANGE_FLUSH_RECEIVE_ADDRESS')
@@ -116,9 +113,8 @@ describe('Test flushMultipleTokenFunds functionalities', () => {
 
   describe('ARBITRARY_EOA', () => {
     it('Revert when changing `flushReceiveAddress`', async () => {
-      const { proxyBridge, defaultAdminSigner, flushReceiveSigner, arbitrarySigner } = await loadFixture(
-        deployContracts,
-      );
+      const { proxyBridge, defaultAdminSigner, flushReceiveSigner, arbitrarySigner } =
+        await loadFixture(deployContracts);
       expect(await proxyBridge.flushReceiveAddress()).to.be.equal(flushReceiveSigner.address);
       await expect(
         proxyBridge.connect(arbitrarySigner).changeFlushReceiveAddress(defaultAdminSigner.address),

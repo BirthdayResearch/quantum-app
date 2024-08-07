@@ -15,7 +15,7 @@ function isSkipToken(arg): arg is typeof skipToken {
  */
 function useWrappedQuery<U, V extends BaseQueryFn, W>(
   query: UseQuery<QueryDefinition<U, V, never, W, string>>,
-  args: Parameters<UseQuery<QueryDefinition<U, V, never, W, string>>>[0]
+  args: Parameters<UseQuery<QueryDefinition<U, V, never, W, string>>>[0],
 ): ReturnType<UseQuery<QueryDefinition<U, V, never, W, string>>> {
   const { networkEnv } = useNetworkEnvironmentContext();
 
