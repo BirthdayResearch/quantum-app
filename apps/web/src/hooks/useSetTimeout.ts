@@ -4,7 +4,7 @@ type CallbackFunction = (...args: any[]) => void;
 
 function useTimeout(
   callback: CallbackFunction,
-  delay: number
+  delay: number,
 ): [CallbackFunction] {
   const timeoutRef = useRef<number | null>(null);
   const callbackRef = useRef<CallbackFunction>(callback);
@@ -19,7 +19,7 @@ function useTimeout(
         window.clearTimeout(timeoutRef.current);
       }
     },
-    []
+    [],
   );
 
   const memoizedCallback = useCallback(
@@ -32,7 +32,7 @@ function useTimeout(
         callbackRef.current?.(args);
       }, delay);
     },
-    [delay, timeoutRef, callbackRef]
+    [delay, timeoutRef, callbackRef],
   );
 
   return useMemo(() => [memoizedCallback], [memoizedCallback]);

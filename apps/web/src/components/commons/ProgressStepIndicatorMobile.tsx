@@ -15,13 +15,13 @@ export default function ProgressStepIndicatorMobile({
           <div
             className={clsx(
               "h-0.5 rounded-[2px]",
-              activeStep >= step ? "bg-valid" : "bg-dark-300"
+              activeStep >= step ? "bg-valid" : "bg-dark-300",
             )}
           />
           <span
             className={clsx(
               "text-xs font-semibold text-left",
-              activeStep >= step ? "text-valid" : "text-dark-700"
+              activeStep >= step ? "text-valid" : "text-dark-700",
             )}
           >{`${step}. ${label}`}</span>
         </div>

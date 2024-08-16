@@ -52,9 +52,8 @@ describe('Transaction fee tests', () => {
   describe('Tx fee address tests', () => {
     describe('DEFAULT_ADMIN_ROLE', () => {
       it('Successfully change the address', async () => {
-        const { proxyBridge, defaultAdminSigner, arbitrarySigner, communityAddress } = await loadFixture(
-          deployContracts,
-        );
+        const { proxyBridge, defaultAdminSigner, arbitrarySigner, communityAddress } =
+          await loadFixture(deployContracts);
         expect(await proxyBridge.communityWallet()).to.be.equal(communityAddress);
         // Changing the community wallet address
         await expect(proxyBridge.connect(defaultAdminSigner).changeTxFeeAddress(arbitrarySigner.address))

@@ -10,17 +10,16 @@ const securityHeaders = [
       `img-src 'self' images.prismic.io data:;` +
       `media-src 'self';` +
       `object-src 'none';` +
-      `script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app *.raygun.io *.googletagmanager.com 'nonce-raygun' ${
+      `script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app *.googletagmanager.com ${
         process.env.NODE_ENV === "development" ? `'unsafe-eval'` : ""
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +
       `font-src fonts.gstatic.com;` +
-      `connect-src 'self' cloudflare-eth.com eth-goerli.g.alchemy.com *.raygun.io rpc.ankr.com mainnet.infura.io ocean.defichain.com testnet.ocean.jellyfishsdk.com wallet.defichain.com api.quantumbridge.app testnet.api.quantumbridge.app *.google-analytics.com ${
+      `connect-src 'self' cloudflare-eth.com eth-sepolia.g.alchemy.com rpc.ankr.com mainnet.infura.io ocean.defichain.com testnet.ocean.jellyfishsdk.com wallet.defichain.com api.quantumbridge.app testnet.api.quantumbridge.app *.google-analytics.com ${
         process.env.NODE_ENV === "development"
           ? `localhost:* 127.0.0.1:* ws://localhost:3000/_next/webpack-hmr`
           : ""
-      } https://fonts.gstatic.com https://fonts.googleapis.com;` +
-      `prefetch-src 'self';`,
+      } https://fonts.gstatic.com https://fonts.googleapis.com;`,
   },
   {
     key: "Referrer-Policy",

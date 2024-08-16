@@ -6,6 +6,7 @@ interface NumericFormatProps extends BigNumber.Format {
   thousandSeparator?: boolean;
   decimalScale?: number;
   trimTrailingZeros?: boolean;
+  testId?: string;
 }
 
 export default function NumericFormat({
@@ -16,6 +17,7 @@ export default function NumericFormat({
   thousandSeparator,
   decimalScale = 8,
   trimTrailingZeros = false,
+  testId,
 }: NumericFormatProps): JSX.Element {
   const fmt: BigNumber.Format = {
     prefix,
@@ -31,5 +33,9 @@ export default function NumericFormat({
     formattedNumber = `${num} ${suffix}`;
   }
 
-  return <span className={className}>{formattedNumber}</span>;
+  return (
+    <span className={className} data-testid={testId}>
+      {formattedNumber}
+    </span>
+  );
 }

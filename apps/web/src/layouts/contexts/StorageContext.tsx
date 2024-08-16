@@ -18,8 +18,12 @@ type StorageKey =
   | "reverted"
   | "unsent-fund"
   | "dfc-address"
+  | "destination-address"
   | "dfc-address-details"
-  | "txn-form";
+  | "txn-form"
+  | "transfer-amount"
+  | "transfer-display-symbol-A"
+  | "transfer-display-symbol-B";
 
 interface StorageContextI {
   txnHash: {
@@ -32,6 +36,10 @@ interface StorageContextI {
   dfcAddress?: string;
   dfcAddressDetails?: AddressDetails;
   txnForm?: UnconfirmedTxnI;
+  transferAmount?: string;
+  transferDisplaySymbolA?: string;
+  transferDisplaySymbolB?: string;
+  destinationAddress?: string;
   getStorage: (key: StorageKey) => string | undefined;
   setStorage: (key: StorageKey, value: string | null) => void;
 }
@@ -55,7 +63,13 @@ export function StorageProvider({
   const [unsentFundTxnHashKey, setUnsentFundTxnHashKey] = useState<string>();
   const [dfcAddress, setDfcAddress] = useState<string>();
   const [dfcAddressDetails, setDfcAddressDetails] = useState<AddressDetails>();
+  const [destinationAddress, setDestinationAddress] = useState<string>();
   const [txnForm, setTxnForm] = useState<any>();
+  const [transferAmount, setTransferAmount] = useState<string>();
+  const [transferDisplaySymbolA, setTransferDisplaySymbolA] =
+    useState<string>();
+  const [transferDisplaySymbolB, setTransferDisplaySymbolB] =
+    useState<string>();
 
   const { networkEnv } = useNetworkEnvironmentContext();
 
@@ -67,7 +81,11 @@ export function StorageProvider({
     UNSENT_FUND_TXN_HASH_KEY,
     DFC_ADDR_KEY,
     DFC_ADDR_DETAILS_KEY,
+    DESTINATION_ADDRESS_KEY,
     TXN_KEY,
+    TRANSFER_AMOUNT_KEY,
+    TRANSFER_DISPLAY_SYMBOL_A_KEY,
+    TRANSFER_DISPLAY_SYMBOL_B_KEY,
   } = useBridgeFormStorageKeys();
 
   useEffect(() => {
@@ -95,12 +113,27 @@ export function StorageProvider({
       getStorageItem<string>(REVERTED_TXN_HASH_KEY) ?? undefined;
     const unsentFundTxnHashKeyStorage =
       getStorageItem<string>(UNSENT_FUND_TXN_HASH_KEY) ?? undefined;
+    const dfcAddressKeyStorage =
+      getStorageItem<string>(DFC_ADDR_KEY) ?? undefined;
+    const destinationAddressKeyStorage =
+      getStorageItem<string>(DESTINATION_ADDRESS_KEY) ?? undefined;
+    const transferAmountKeyStorage =
+      getStorageItem<string>(TRANSFER_AMOUNT_KEY) ?? undefined;
+    const transferDisplaySymbolAKeyStorage =
+      getStorageItem<string>(TRANSFER_DISPLAY_SYMBOL_A_KEY) ?? undefined;
+    const transferDisplaySymbolBKeyStorage =
+      getStorageItem<string>(TRANSFER_DISPLAY_SYMBOL_B_KEY) ?? undefined;
 
     setUnconfirmedTxnHashKey(unconfirmedTxnHashKeyStorage);
     setConfirmedTxnHashKey(confirmedTxnHashKeyStorage);
     setAllocationTxnHashKey(allocationTxnHashKeyStorage);
     setRevertedTxnHashKey(revertedTxnHashKeyStorage);
     setUnsentFundTxnHashKey(unsentFundTxnHashKeyStorage);
+    setDfcAddress(dfcAddressKeyStorage);
+    setDestinationAddress(destinationAddressKeyStorage);
+    setTransferAmount(transferAmountKeyStorage);
+    setTransferDisplaySymbolA(transferDisplaySymbolAKeyStorage);
+    setTransferDisplaySymbolB(transferDisplaySymbolBKeyStorage);
   }, [
     networkEnv,
     CONFIRMED_TXN_HASH_KEY,
@@ -111,6 +144,9 @@ export function StorageProvider({
     DFC_ADDR_KEY,
     DFC_ADDR_DETAILS_KEY,
     TXN_KEY,
+    TRANSFER_AMOUNT_KEY,
+    TRANSFER_DISPLAY_SYMBOL_A_KEY,
+    TRANSFER_DISPLAY_SYMBOL_B_KEY,
   ]);
 
   const context: StorageContextI = useMemo(() => {
@@ -136,9 +172,21 @@ export function StorageProvider({
       } else if (key === "dfc-address-details") {
         setDfcAddressDetails(JSON.parse(value));
         setStorageItem(DFC_ADDR_DETAILS_KEY, JSON.parse(value));
+      } else if (key === "destination-address") {
+        setDestinationAddress(value);
+        setStorageItem(DESTINATION_ADDRESS_KEY, value);
       } else if (key === "txn-form") {
         setTxnForm(JSON.parse(value));
         setStorageItem(TXN_KEY, JSON.parse(value));
+      } else if (key === "transfer-amount") {
+        setTransferAmount(value);
+        setStorageItem(TRANSFER_AMOUNT_KEY, value);
+      } else if (key === "transfer-display-symbol-A") {
+        setTransferDisplaySymbolA(value);
+        setStorageItem(TRANSFER_DISPLAY_SYMBOL_A_KEY, value);
+      } else if (key === "transfer-display-symbol-B") {
+        setTransferDisplaySymbolB(value);
+        setStorageItem(TRANSFER_DISPLAY_SYMBOL_B_KEY, value);
       }
     };
 
@@ -159,8 +207,16 @@ export function StorageProvider({
         value = dfcAddress;
       } else if (key === "dfc-address-details") {
         value = dfcAddressDetails;
+      } else if (key === "destination-address") {
+        value = destinationAddress;
       } else if (key === "txn-form") {
         value = txnForm;
+      } else if (key === "transfer-amount") {
+        value = transferAmount;
+      } else if (key === "transfer-display-symbol-A") {
+        value = transferDisplaySymbolA;
+      } else if (key === "transfer-display-symbol-B") {
+        value = transferDisplaySymbolB;
       }
 
       return value;
@@ -180,7 +236,14 @@ export function StorageProvider({
       dfcAddress: dfcAddress === null ? undefined : dfcAddress,
       dfcAddressDetails:
         dfcAddressDetails === null ? undefined : dfcAddressDetails,
+      destinationAddress:
+        destinationAddress === null ? undefined : destinationAddress,
       txnForm: txnForm === null ? undefined : txnForm,
+      transferAmount: transferAmount === null ? undefined : transferAmount,
+      transferDisplaySymbolA:
+        transferDisplaySymbolA === null ? undefined : transferDisplaySymbolA,
+      transferDisplaySymbolB:
+        transferDisplaySymbolB === null ? undefined : transferDisplaySymbolB,
       getStorage,
       setStorage,
     };
@@ -192,7 +255,11 @@ export function StorageProvider({
     unsentFundTxnHashKey,
     dfcAddress,
     dfcAddressDetails,
+    destinationAddress,
     txnForm,
+    transferAmount,
+    transferDisplaySymbolA,
+    transferDisplaySymbolB,
     REVERTED_TXN_HASH_KEY,
     CONFIRMED_TXN_HASH_KEY,
     ALLOCATION_TXN_HASH_KEY,
@@ -200,7 +267,11 @@ export function StorageProvider({
     UNSENT_FUND_TXN_HASH_KEY,
     DFC_ADDR_KEY,
     DFC_ADDR_DETAILS_KEY,
+    DESTINATION_ADDRESS_KEY,
     TXN_KEY,
+    TRANSFER_AMOUNT_KEY,
+    TRANSFER_DISPLAY_SYMBOL_A_KEY,
+    TRANSFER_DISPLAY_SYMBOL_B_KEY,
   ]);
 
   return (

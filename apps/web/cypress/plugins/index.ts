@@ -17,7 +17,7 @@
 // eslint-disable-next-line no-unused-vars
 module.exports = (
   on: Cypress.PluginEvents,
-  config: Cypress.PluginConfigOptions
+  config: Cypress.PluginConfigOptions,
 ): any => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   require("@cypress/code-coverage/task")(on, config);

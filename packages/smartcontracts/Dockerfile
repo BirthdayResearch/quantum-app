@@ -1,7 +1,7 @@
 # Dockerfile used to build an image to start the hardhat network
-FROM node:16-alpine3.15
+FROM node:18.15.0-alpine3.17
 
-RUN npm install -g pnpm
+RUN corepack enable pnpm
 RUN pnpm config set auto-install-peers true
 
 RUN apk --no-cache add curl git

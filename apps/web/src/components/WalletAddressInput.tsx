@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import * as ethers from "ethers";
-import { useAccount, useNetwork } from "wagmi";
+import { isAddress } from "viem";
+import { useAccount } from "wagmi";
 import { FiClipboard } from "react-icons/fi";
 import { IoCloseCircle } from "react-icons/io5";
 import { HiLockClosed } from "react-icons/hi";
@@ -15,8 +15,6 @@ import {
 } from "@waveshq/walletkit-core";
 import { Network } from "types";
 import Tooltip from "./commons/Tooltip";
-import EnvironmentNetworkSwitch from "./EnvironmentNetworkSwitch";
-import { ETHEREUM_MAINNET_ID } from "../constants";
 import MetaMaskIconSmall from "./icons/MetaMaskIconSmall";
 
 interface Props {
@@ -29,6 +27,7 @@ interface Props {
   onAddressInputError: (hasError: boolean) => void;
   isPrimary?: boolean;
   customMessage?: string;
+  testId: string;
 }
 
 /**
@@ -54,7 +53,7 @@ function AddressWithVerifiedBadge({
         isLg
           ? "after:-bottom-1 after:ml-2 after:content-[url('/verified-24x24.svg')]"
           : "after:ml-1 after:content-[url('/verified-20x20.svg')]",
-        isPrimary ? "text-sm lg:text-base" : "text-sm"
+        isPrimary ? "text-sm lg:text-base" : "text-sm",
       )}
       onClick={() => onClick()}
       onKeyDown={() => {}}
@@ -75,6 +74,7 @@ export default function WalletAddressInput({
   onAddressInputError,
   isPrimary = true,
   customMessage,
+  testId,
 }: Props): JSX.Element {
   const [isValidAddress, setIsValidAddress] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -84,7 +84,6 @@ export default function WalletAddressInput({
   const [copiedFromClipboard, setCopiedFromClipboard] = useState(false);
 
   const { isConnected, address } = useAccount();
-  const { chain } = useNetwork();
   const { networkEnv } = useNetworkEnvironmentContext();
   const { isMobile } = useResponsive();
   useAutoResizeTextArea(textAreaRef.current, [addressInput, placeholder]);
@@ -92,11 +91,11 @@ export default function WalletAddressInput({
   const validateAddressInput = (input: string): void => {
     let isValid = false;
     if (blockchain === Network.Ethereum) {
-      isValid = ethers.utils.isAddress(input);
+      isValid = isAddress(input);
     } else {
       const decodedAddress = fromAddress(
         input,
-        getJellyfishNetwork(networkEnv).name
+        getJellyfishNetwork(networkEnv).name,
       );
       isValid = decodedAddress !== undefined;
     }
@@ -104,7 +103,9 @@ export default function WalletAddressInput({
   };
 
   const handlePasteBtnClick = async () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     const copiedText = await navigator.clipboard.readText();
     if (copiedText) {
       onAddressInputChange(copiedText);
@@ -166,7 +167,7 @@ export default function WalletAddressInput({
           EnvironmentNetwork.LocalPlayground,
         ].includes(networkEnv);
       message = isTestnet
-        ? `Make sure to only use ${networkEnv} for testing`
+        ? `You are on a ${networkEnv} network. Make sure to only use a ${networkEnv} address`
         : "";
     }
     setError({ message, isError: hasInvalidInput });
@@ -190,22 +191,15 @@ export default function WalletAddressInput({
             isPrimary,
         })}
       >
-        <span className="pl-5 text-xs font-semibold xl:tracking-wider lg:text-sm text-dark-900">
+        <span className="pl-5 text-xs font-semibold xl:tracking-wider lg:text-sm text-dark-900 tracking-normal lg:tracking-[0.02em] ">
           {label}
         </span>
         {/*  Network environment */}
 
-        {chain?.id !== ETHEREUM_MAINNET_ID &&
-          blockchain === Network.DeFiChain &&
-          isPrimary && (
-            <EnvironmentNetworkSwitch
-              onChange={() => onAddressInputChange("")}
-            />
-          )}
         <div
           className={clsx(
             "absolute right-0 rounded bg-valid px-2 py-1 text-2xs text-dark-00  transition duration-300 lg:text-xs",
-            copiedFromClipboard ? "opacity-100" : "opacity-0"
+            copiedFromClipboard ? "opacity-100" : "opacity-0",
           )}
         >
           Added from clipboard
@@ -228,7 +222,7 @@ export default function WalletAddressInput({
             ),
             "pointer-events-none bg-dark-100": readOnly,
             "lg:px-5 lg:py-3": isPrimary,
-          }
+          },
         )}
       >
         {/* Paste icon with tooltip */}
@@ -260,7 +254,7 @@ export default function WalletAddressInput({
 
         {/* Textarea input */}
         <textarea
-          data-testid="receiver-address"
+          data-testid={testId}
           ref={textAreaRef}
           className={clsx(
             `max-h-36 grow resize-none bg-transparent text-sm tracking-[0.01em] text-dark-1000 focus:outline-none py-0.5`,
@@ -270,7 +264,7 @@ export default function WalletAddressInput({
               : "placeholder:text-dark-500",
             isPrimary
               ? "text-sm tracking-[0.01em] text-dark-1000 placeholder:text-sm lg:text-base lg:placeholder:text-base"
-              : "text-sm tracking-[0.01em] text-dark-1000 placeholder:text-sm"
+              : "text-sm tracking-[0.01em] text-dark-1000 placeholder:text-sm",
           )}
           placeholder={placeholder}
           value={addressInput}
@@ -278,7 +272,9 @@ export default function WalletAddressInput({
           onBlur={() => setIsFocused(false)}
           onChange={(e) => onAddressInputChange(e.target.value)}
           onKeyPress={(e) => {
-            if (e.key === "Enter") e.preventDefault();
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
           }}
           disabled={disabled}
           spellCheck={false}
@@ -300,13 +296,15 @@ export default function WalletAddressInput({
           <button
             type="button"
             onClick={() => {
-              if (address) onAddressInputChange(address);
+              if (address) {
+                onAddressInputChange(address);
+              }
             }}
             className={clsx(
               "flex items-center lg:min-w-[130px] font-bold text-dark-800 text-2xs rounded-md h-[28px] px-3 border-[0.5px]",
               "border-dark-200",
               "active:border-dark-500 active:opacity-70",
-              "hover:border-dark-500"
+              "hover:border-dark-500",
             )}
           >
             <MetaMaskIconSmall />
@@ -328,7 +326,7 @@ export default function WalletAddressInput({
       <span
         className={clsx(
           "block px-4 pt-2 text-xs lg:px-6 lg:text-sm empty:before:content-['*'] empty:before:opacity-0",
-          error.isError ? "text-error" : "text-warning"
+          error.isError ? "text-error" : "text-warning",
         )}
       >
         {error.message && !disabled ? error.message : ""}

@@ -49,6 +49,7 @@ describe('EvmContractManager', () => {
         TestContract: {
           name: 'TestContract',
           ref: expect.anything(),
+          deploymentTxHash: expect.anything(),
         },
       });
     });

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Space+Grotesk&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -38,6 +38,35 @@
       rgba(0, 0, 0, 0.4)
     ),
     #ffffff;
+
+  --ui-dark-network-tag-1: linear-gradient(
+    144.57deg,
+    rgba(0, 119, 20, 0.3) -0.38%,
+    rgba(2, 37, 8, 0.3) 98.45%
+  );
+
+  --ui-dark-network-tag-hover-1: linear-gradient(
+    144.57deg,
+    rgba(0, 119, 20, 0.5) -0.38%,
+    rgba(2, 37, 8, 0.5) 98.45%
+  );
+
+  --ui-dark-network-tag-2: linear-gradient(
+    144.57deg,
+    rgba(200, 113, 0, 0.3) -0.38%,
+    rgba(24, 13, 0, 0.3) 98.45%
+  );
+
+  --ui-dark-network-tag-hover-2: linear-gradient(
+    144.57deg,
+    rgba(200, 113, 0, 0.5) -0.38%,
+    rgba(24, 13, 0, 0.5) 98.45%
+  );
+
+  --ui-dark-network-tag-outline-1: rgba(2, 54, 10, 0.5);
+  --ui-dark-network-tag-outline-hover-1: #02500d;
+  --ui-dark-network-tag-outline-2: rgba(114, 64, 0, 0.5);
+  --ui-dark-network-tag-outline-hover-2: #724000;
 
   /* Light mode UI colors */
   --ui-light-card-bg: linear-gradient(
@@ -90,6 +119,14 @@
       rgba(0, 0, 0, 0.5)
     ),
     linear-gradient(72.57deg, #ec008c 17.15%, #5b10ff 89.41%, #0468d6 102.56%);
+
+  --accent-gradient-6: linear-gradient(
+    120.02deg,
+    rgba(255, 255, 255, 0.25) 8.27%,
+    rgba(223, 243, 167, 0.2) 33.42%,
+    rgba(99, 173, 241, 0.3) 68.31%,
+    rgba(255, 0, 175, 0.5) 103.28%
+  );
 }
 
 body {
@@ -125,6 +162,18 @@ body {
   .fill-bg-gradient-5 {
     background: var(--accent-gradient-5) border-box;
   }
+  .border-gradient-6 {
+    position: relative;
+  }
+  .border-gradient-6::before {
+    background: var(--accent-gradient-6);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
   .dark-card-bg {
     background: var(--ui-dark-card-bg) border-box;
   }
@@ -141,7 +190,8 @@ body {
     background: var(--ui-dark-button-pressed) border-box;
   }
   .dark-bg-gradient-1 {
-    background: linear-gradient(#000000, #000000) padding-box,
+    background:
+      linear-gradient(#000000, #000000) padding-box,
       var(--accent-gradient-1) border-box;
   }
   .dark-cta-hover {
@@ -157,8 +207,11 @@ body {
     position: absolute;
     z-index: -1;
     background: var(--accent-gradient-2);
-    mask: linear-gradient(#000000 0 0) content-box, linear-gradient(#000000 0 0);
-    -webkit-mask: linear-gradient(#000000 0 0) content-box,
+    mask:
+      linear-gradient(#000000 0 0) content-box,
+      linear-gradient(#000000 0 0);
+    -webkit-mask:
+      linear-gradient(#000000 0 0) content-box,
       linear-gradient(#000000 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
@@ -168,7 +221,8 @@ body {
     background: var(--ui-light-card-bg) border-box;
   }
   .light-bg-gradient-1 {
-    background: linear-gradient(#ffffff, #ffffff) padding-box,
+    background:
+      linear-gradient(#ffffff, #ffffff) padding-box,
       var(--accent-gradient-1) border-box;
   }
   .bg-dark-gradient-1 {
@@ -180,9 +234,6 @@ body {
   .bg-dark-gradient-2 {
     background: var(--ui-dark-gradient-2);
   }
-  .bg-dark-grdient-3 {
-    background: var(--accent-gradient-3);
-  }
   .dark-bg-card-section {
     background: var(--ui-dark-card-section);
     opacity: var(--tw-bg-opacity);
@@ -190,6 +241,37 @@ body {
   .bg-dark-gradient-3 {
     background: var(--ui-dark-gradient-3);
   }
+  .bg-gradient-3 {
+    background: var(--accent-gradient-3);
+  }
+  .bg-dark-gradient-4 {
+    background: var(--accent-gradient-4);
+  }
+  .bg-dark-network-tag-1 {
+    background: var(--ui-dark-network-tag-1);
+  }
+  .bg-dark-network-tag-hover-1 {
+    border-color: var(--ui-dark-network-tag-outline-hover-1);
+  }
+  .border-dark-network-tag-1 {
+    border-color: var(--ui-dark-network-tag-outline-1);
+  }
+  .border-dark-network-tag-hover-1 {
+    border-color: var(--ui-dark-network-tag-outline-hover-1);
+  }
+  .bg-dark-network-tag-2 {
+    background: var(--ui-dark-network-tag-2);
+  }
+  .bg-dark-network-tag-hover-2 {
+    border-color: var(--ui-dark-network-tag-outline-hover-2);
+  }
+  .border-dark-network-tag-2 {
+    border-color: var(--ui-dark-network-tag-outline-2);
+  }
+  .border-dark-network-tag-hover-2 {
+    border-color: var(--ui-dark-network-tag-outline-hover-2);
+  }
+
   .hover-text-gradient-1 {
     background-image: linear-gradient(90deg, #ff00ff 0%, #ec0c8d 100.04%);
   }
@@ -212,4 +294,8 @@ body {
 ::-webkit-scrollbar-track {
   box-shadow: rgb(55 47 71) 0px 0px 5px inset;
   border-radius: 10px;
+}
+
+.grid-rows-max-content-1fr {
+  grid-template-rows: max-content 1fr;
 }

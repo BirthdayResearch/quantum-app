@@ -1,72 +1,22 @@
 {
-  "private": true,
   "name": "smartcontracts-queue",
   "version": "0.0.0",
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "postinstall": "pnpm run generate:contract-types",
     "build": "pnpm run generate:contract-types && tsc -b ./tsconfig.build.json",
     "build:docker": "docker build -t bridge-packages/hardhatnetwork-queue:0.0.0 .",
-    "generate:contract-types": "hardhat compile --config ./src/hardhat.config.ts",
-    "test": "jest --coverage",
     "clean": "rm -rf dist && rm -f tsconfig.build.tsbuildinfo && hardhat clean --config ./src/hardhat.config.ts",
-    "test:hardhat": "pnpm run generate:contract-types && hardhat test --config ./src/hardhat.config.ts",
-    "lint": "eslint . --fix"
+    "generate:contract-types": "hardhat compile --config ./src/hardhat.config.ts",
+    "postinstall": "pnpm run generate:contract-types",
+    "lint": "eslint . --fix",
+    "test": "jest --coverage",
+    "test:hardhat": "pnpm run generate:contract-types && hardhat test --config ./src/hardhat.config.ts"
   },
-  "eslintConfig": {
-    "extends": [
-      "@birthdayresearch"
-    ],
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "overrides": [
-      {
-        "files": [
-          "*.ts"
-        ],
-        "rules": {
-          "check-file/filename-naming-convention": "off",
-          "import/no-default-export": "off",
-          "no-console": "off",
-          "no-underscore-dangle": "off",
-          "import/extensions": "off"
-        }
-      }
-    ]
-  },
-  "jest": {
-    "displayName": "test:hardhat",
-    "preset": "@birthdayresearch/sticky-turbo-jest",
-    "reporters": [
-      "default"
-    ],
-    "testTimeout": 300000,
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/src/test"
-    ]
-  },
-  "devDependencies": {
-    "@birthdayresearch/eslint-config": "^0.5.14",
-    "@birthdayresearch/sticky-testcontainers": "^0.5.14",
-    "@birthdayresearch/sticky-turbo-jest": "^0.5.14",
-    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
-    "hardhat": "2.14.0",
-    "@openzeppelin/contracts": "4.8.3",
-    "@openzeppelin/contracts-upgradeable": "4.8.3",
-    "ethers": "~5.7.2",
-    "@ethersproject/abi": "5.7.0",
-    "@ethersproject/providers": "5.7.2",
-    "@birthdayresearch/sticky-typescript": "^0.5.14",
-    "dotenv": "^16.0.3",
-    "cross-fetch": "^3.1.6"
-  },
-  "prettier": "@birthdayresearch/sticky-prettier",
   "lint-staged": {
     "*": [
       "prettier --write --ignore-unknown"
@@ -74,5 +24,57 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "prettier": "@stickyjs/prettier",
+  "eslintConfig": {
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "extends": [
+      "@stickyjs"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "no-console": "off",
+          "no-restricted-properties": "warn",
+          "no-underscore-dangle": "off",
+          "check-file/filename-naming-convention": "off",
+          "import/extensions": "off",
+          "import/no-default-export": "off"
+        }
+      }
+    ]
+  },
+  "jest": {
+    "displayName": "test:hardhat",
+    "preset": "@stickyjs/turbo-jest",
+    "reporters": [
+      "default"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/test"
+    ],
+    "testTimeout": 300000
+  },
+  "devDependencies": {
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/providers": "5.7.2",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@openzeppelin/contracts": "4.8.3",
+    "@openzeppelin/contracts-upgradeable": "4.8.3",
+    "@stickyjs/eslint-config": "^1.3.4",
+    "@stickyjs/testcontainers": "^1.3.4",
+    "@stickyjs/turbo-jest": "^1.3.4",
+    "@stickyjs/typescript": "^1.3.4",
+    "cross-fetch": "^3.1.8",
+    "dotenv": "^16.3.1",
+    "ethers": "~5.7.2",
+    "hardhat": "2.14.0",
+    "typescript": "4.9.5"
   }
 }

@@ -76,7 +76,7 @@ export default function StepTwoSendConfirmation({
   const [isLoading, setIsLoading] = useState(false);
   const [isAddressExpired, setIsAddressExpired] = useState(false);
   const [createdBeforeInMSec, setCreatedBeforeInMSec] = useState(
-    getTimeDifference(addressDetail?.createdAt)
+    getTimeDifference(addressDetail?.createdAt),
   );
   const [addressGenerationError, setAddressGenerationError] = useState("");
   const [generateAddress] = useGenerateAddressMutation();
@@ -102,14 +102,14 @@ export default function StepTwoSendConfirmation({
           setStorage("dfc-address", address);
           setStorage(
             "dfc-address-details",
-            JSON.stringify({ address, createdAt, refundAddress })
+            JSON.stringify({ address, createdAt, refundAddress }),
           );
           setAddressGenerationError("");
           setDfcUniqueAddress(address);
         } catch ({ data }) {
           if (data?.statusCode === HttpStatusCode.TooManyRequests) {
             setAddressGenerationError(
-              "Address generation limit reached, please wait for a minute and try again"
+              "Address generation limit reached, please wait for a minute and try again",
             );
           } else {
             setAddressGenerationError(data?.error);
@@ -120,7 +120,7 @@ export default function StepTwoSendConfirmation({
         }
       }
     }, 200),
-    [dfcAddress]
+    [dfcAddress],
   );
 
   useEffect(() => {
@@ -134,8 +134,12 @@ export default function StepTwoSendConfirmation({
       >
         <div
           className={clsx(
-            "max-w-max mx-auto flex flex-row order-1 mt-6 justify-start border-[0.5px] border-dark-200 rounded",
-            "md:w-2/5 md:flex-col md:shrink-0 md:order-none px-6 pt-6 pb-3 md:mt-0"
+            "max-w-max mx-auto flex flex-row order-1 mt-6 justify-start border-[0.5px] border-dark-200 rounded px-6 pt-6 pb-6 ",
+            "md:w-2/5 md:flex-col md:shrink-0 md:order-none md:pb-3 md:mt-0",
+            {
+              "md:border-error":
+                isAddressExpired || addressGenerationError !== "",
+            },
           )}
         >
           {isLoading ? (
@@ -148,7 +152,7 @@ export default function StepTwoSendConfirmation({
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center">
-              <div className="w-[164px] relative">
+              <div className={clsx("w-full relative", "md:w-[164px]")}>
                 {isAddressExpired ? (
                   <AddressError
                     delayAction={false}
@@ -170,7 +174,9 @@ export default function StepTwoSendConfirmation({
                       dfcUniqueAddress && (
                         <QrAddress dfcUniqueAddress={dfcUniqueAddress}>
                           {createdBeforeInMSec > 0 && (
-                            <div className="text-center">
+                            <div
+                              className={clsx("text-left", "md:text-center")}
+                            >
                               <TimeLimitCounter
                                 time={createdBeforeInMSec}
                                 onTimeElapsed={() => {
@@ -197,7 +203,7 @@ export default function StepTwoSendConfirmation({
           <p
             className={clsx(
               "text-sm text-dark-700 mt-1 text-center md:text-left",
-              "md:mt-2"
+              "md:mt-2",
             )}
           >
             Use a DeFiChain wallet to send your funds for verification before

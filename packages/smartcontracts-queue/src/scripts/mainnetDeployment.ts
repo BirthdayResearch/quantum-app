@@ -16,8 +16,8 @@ const eth = constants.AddressZero;
 const dfi = '0x8fc8f8269ebca376d046ce292dc7eac40c8d358a';
 const SUPPORTED_TOKEN_ADDRESSES: string[] = [usdc, usdt, euroc, wbtc, eth, dfi];
 
-// for goerli deployment
-// npx hardhat run --network goerli ./scripts/mainnetDeployment.ts --config hardhat.config.ts
+// for Sepolia deployment
+// npx hardhat run --network sepolia ./scripts/mainnetDeployment.ts --config hardhat.config.ts
 // for mainnet deployment
 // npx hardhat run --network mainnet ./scripts/mainnetDeployment.ts --config hardhat.config.ts
 async function main() {

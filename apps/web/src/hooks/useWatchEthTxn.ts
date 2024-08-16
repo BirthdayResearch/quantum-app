@@ -80,7 +80,7 @@ export default function useWatchEthTxn() {
           ) {
             setStorage(
               "allocationTxnHash",
-              allocateDfcFundData?.transactionHash
+              allocateDfcFundData?.transactionHash,
             );
             setStorage("confirmed", unconfirmed ?? null);
             setStorage("unconfirmed", null);

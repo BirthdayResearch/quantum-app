@@ -1,4 +1,4 @@
-import { GenericContainer, GenericStartedContainer, Wait } from '@birthdayresearch/sticky-testcontainers';
+import { GenericContainer, GenericStartedContainer, Wait } from '@stickyjs/testcontainers';
 import fetch, { Headers } from 'cross-fetch';
 
 import { HardhatNetwork } from './HardhatNetwork';

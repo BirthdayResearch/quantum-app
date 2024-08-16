@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { RiLoader2Line } from "react-icons/ri";
-import { FiRefreshCw } from "react-icons/fi";
+import { FiRefreshCw, FiArrowUpRight } from "react-icons/fi";
 
 export default function ActionButton({
   label,
@@ -12,6 +12,8 @@ export default function ActionButton({
   responsiveStyle,
   testId,
   customStyle,
+  customIconStyle,
+  isExternalArrowIcon,
 }: {
   label: string;
   onClick?: () => void;
@@ -21,7 +23,9 @@ export default function ActionButton({
   responsiveStyle?: string;
   testId?: string;
   customStyle?: string;
+  customIconStyle?: string;
   isRefresh?: boolean;
+  isExternalArrowIcon?: boolean;
 }) {
   const responsiveSizing =
     responsiveStyle ?? "lg:text-base lg:py-4 lg:px-8 xl:px-14";
@@ -44,7 +48,7 @@ export default function ActionButton({
           "dark-cta-pressed": isLoading,
           "pointer-events-none": disabled || isLoading,
         },
-        customStyle ?? defaultStyle
+        customStyle ?? defaultStyle,
       )}
       disabled={disabled}
       onClick={onClick}
@@ -58,6 +62,9 @@ export default function ActionButton({
       )}
       {isRefresh && (
         <FiRefreshCw size={16} className="text-dark-100 ml-2 inline-block" />
+      )}
+      {isExternalArrowIcon && (
+        <FiArrowUpRight size={20} className={clsx(customIconStyle ?? "mr-2")} />
       )}
     </button>
   );

@@ -1,0 +1,8 @@
+[build]
+publish = "apps/web/.next"
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

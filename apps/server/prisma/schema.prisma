@@ -1,0 +1,101 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EthereumTransactionStatus {
+  NOT_CONFIRMED
+  CONFIRMED
+}
+
+enum BotStatus {
+  COMPLETE
+  CANNOT_COMPLETE
+  TOKEN_NOT_FOUND
+  NO_UTXO
+  SENT
+  ERROR
+}
+
+model DeFiChainAddressIndex {
+  id                 BigInt     @id @default(autoincrement())
+  index              Int
+  address            String     @unique
+  refundAddress      String
+  claimNonce         String?
+  claimDeadline      String?
+  claimSignature     String?
+  claimAmount        String?
+  tokenSymbol        String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime?  @updatedAt
+  hotWalletAddress   String
+  ethReceiverAddress String?
+  botStatus          BotStatus?
+
+  @@unique([hotWalletAddress, index])
+}
+
+model BridgeEventTransactions {
+  id                             BigInt                    @id @default(autoincrement())
+  transactionHash                String                    @unique
+  status                         EthereumTransactionStatus
+  sendTransactionHash            String?
+  unconfirmedSendTransactionHash String?
+  createdAt                      DateTime                  @default(now())
+  updatedAt                      DateTime?                 @updatedAt
+  amount                         String?
+  tokenSymbol                    String?
+  blockHash                      String?
+  blockHeight                    String?
+}
+
+enum QueueStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  ERROR
+  REJECTED
+  EXPIRED
+  REFUND_REQUESTED
+  REFUNDED
+}
+
+enum DeFiChainTransactionStatus {
+  NOT_CONFIRMED
+  CONFIRMED
+}
+
+model EthereumQueue {
+  id               BigInt                    @id @default(autoincrement())
+  transactionHash  String                    @unique // when user sends funds to smart contract
+  ethereumStatus   EthereumTransactionStatus
+  status           QueueStatus
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime?                 @updatedAt
+  amount           String?
+  tokenSymbol      String?
+  defichainAddress String
+  expiryDate       DateTime
+  adminQueue       AdminEthereumQueue?
+}
+
+model AdminEthereumQueue {
+  id                   BigInt                     @id @default(autoincrement())
+  queue                EthereumQueue              @relation(fields: [queueTransactionHash], references: [transactionHash])
+  queueTransactionHash String                     @unique
+  lastUpdatedBy        String?
+  hotWalletAddress     String?    
+  sendTransactionHash  String?                    @unique // when admin send funds to generated address / hot wallet address 
+  defichainStatus      DeFiChainTransactionStatus
+  hasVerified          Boolean?
+  blockHash            String?
+  blockHeight          String?
+  createdAt            DateTime                   @default(now())
+  updatedAt            DateTime?                  @updatedAt  
+}

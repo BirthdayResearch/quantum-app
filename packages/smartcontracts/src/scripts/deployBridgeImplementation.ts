@@ -3,7 +3,7 @@ import { ethers } from 'hardhat';
 import { BridgeV1 } from '../generated';
 import { verify } from './utils/verify';
 
-// npx hardhat run --network goerli ./scripts/deployBridgeImplementation.ts
+// npx hardhat run --network sepolia ./scripts/deployBridgeImplementation.ts
 export async function bridgeImplementation(): Promise<BridgeV1> {
   const BridgeV1Contract = await ethers.getContractFactory('BridgeV1');
   const bridgeV1 = await BridgeV1Contract.deploy();

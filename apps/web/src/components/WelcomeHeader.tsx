@@ -20,7 +20,7 @@ export default function WelcomeHeader() {
         <h2 className={clsx(bylineStyle)}>blockchain at a time</h2>
         <div className="flex flex-row items-center xs:mt-[36px] md:mt-7 hidden md:inline-flex">
           <Link
-            href="https://birthdayresearch.notion.site/birthdayresearch/Quantum-Documentation-dc1d9174dd294b06833e7859d437e25e"
+            href="https://birthday-research.gitbook.io/quantum-documentation/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-row items-center group"
@@ -32,7 +32,7 @@ export default function WelcomeHeader() {
             <span className={clsx(underText)}>Documentation</span>
           </Link>
           <Link
-            href="https://birthdayresearch.notion.site/FAQs-58af5cc140de432e8c9d1510ead3e3c0"
+            href="https://birthday-research.gitbook.io/quantum-documentation/troubleshooting/faqs"
             target="_blank"
             rel="noopener noreferrer"
             className="ml-6 flex flex-row items-center group"

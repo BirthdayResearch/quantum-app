@@ -33,7 +33,7 @@ export default function Tooltip({
       aria-label="tooltip-button"
       className={clsx(
         "relative inline-block rounded-full p-1 focus-visible:outline-none",
-        containerClass
+        containerClass,
       )}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}

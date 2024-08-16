@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 
 export default function useTimeCounter(
   initialCounter: number,
-  onTimeCounterEnd: () => void
+  onTimeCounterEnd: () => void,
 ) {
   const [timeRemaining, setTimeRemaining] = useState<BigNumber>(
-    new BigNumber(initialCounter)
+    new BigNumber(initialCounter),
   );
   const intervalRef = useRef<any>(null);
 

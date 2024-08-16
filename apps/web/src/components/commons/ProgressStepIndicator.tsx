@@ -27,7 +27,7 @@ export default function ProgressStepIndicator({
         "relative flex justify-between px-10",
         "before:absolute before:bg-dark-500 before:h-[1px] before:w-full before:top-1/2 before:-translate-y(1/2) before:left-0",
         "after:absolute after:bg-valid after:h-[1px] after:w-1/5 after:top-1/2 after:-translate-y(1/2) after:left-0 after:ease-in after:duration-300",
-        getProgressWidth()
+        getProgressWidth(),
       )}
     >
       {steps.map(({ step, label }) => (
@@ -37,13 +37,13 @@ export default function ProgressStepIndicator({
             className={clsx(
               "w-7 h-7 flex items-center justify-center rounded-full border-2 ease-in hover:border-dark-btn-hover",
               activeStep > step ? "bg-valid" : "bg-dark-100",
-              activeStep >= step ? "border-valid" : "border-dark-500"
+              activeStep >= step ? "border-valid" : "border-dark-500",
             )}
           >
             <span
               className={clsx(
                 "font-bold tracking-wide",
-                activeStep > step ? "text-dark-00" : "text-valid"
+                activeStep > step ? "text-dark-00" : "text-valid",
               )}
             >
               {activeStep >= step ? step : ""}
@@ -55,7 +55,7 @@ export default function ProgressStepIndicator({
             <span
               className={clsx(
                 "text-xs",
-                activeStep === step ? "text-dark-1000" : "text-dark-500"
+                activeStep === step ? "text-dark-1000" : "text-dark-500",
               )}
             >
               {label}

@@ -9,13 +9,13 @@ function Page404() {
       className={clsx(
         "min-h-screen px-6 pt-8",
         "md:w-9/12 lg:w-10/12 md:px-12",
-        "lg:px-[120px]"
+        "lg:px-[120px]",
       )}
       data-testid="page-not-found"
     >
       <div
         className={clsx(
-          "md:text-[16px] leading-4 text-error tracking-[0.04em] pb-2"
+          "md:text-[16px] leading-4 text-error tracking-[0.04em] pb-2",
         )}
       >
         ERROR 404
@@ -23,7 +23,7 @@ function Page404() {
       <h1
         className={clsx(
           "text-dark-1000 text-4xl pb-6",
-          "lg:text-[80px] lg:leading-[84px]"
+          "lg:text-[80px] lg:leading-[84px]",
         )}
       >
         Page Not Found

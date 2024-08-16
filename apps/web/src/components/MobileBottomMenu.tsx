@@ -14,13 +14,13 @@ export default function MobileBottomMenu() {
     {
       id: "faqs",
       title: "FAQs",
-      href: "https://birthdayresearch.notion.site/FAQs-58af5cc140de432e8c9d1510ead3e3c0",
+      href: "https://birthday-research.gitbook.io/quantum-documentation/troubleshooting/faqs",
       icon: FiHelpCircle,
     },
     {
       id: "documentation",
       title: "Documentation",
-      href: "https://birthdayresearch.notion.site/birthdayresearch/Quantum-Documentation-dc1d9174dd294b06833e7859d437e25e",
+      href: "https://birthday-research.gitbook.io/quantum-documentation/",
       icon: FiBook,
     },
   ];

@@ -8,9 +8,8 @@ import { toWei } from './testUtils/mathUtils';
 describe('Withdrawal tests', () => {
   describe('WITHDRAW_ROLE', () => {
     it('Successful Withdrawal of ERC20 by WITHDRAW_ROLE only', async () => {
-      const { proxyBridge, testToken, testToken2, withdrawSigner, flushReceiveSigner } = await loadFixture(
-        deployContracts,
-      );
+      const { proxyBridge, testToken, testToken2, withdrawSigner, flushReceiveSigner } =
+        await loadFixture(deployContracts);
       // Minting 100 tokens to Bridge
       await testToken.mint(proxyBridge.address, toWei('100'));
       await testToken2.mint(proxyBridge.address, toWei('100'));

@@ -62,6 +62,7 @@ export default function StepOneInitiate({
               ? "Refund address is disabled for your transaction's security. If you need to edit it, cancel this transaction and create a new one."
               : undefined
           }
+          testId="instant-refund-address-input"
         />
         <div className="pt-5">
           <ActionButton

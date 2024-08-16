@@ -7,7 +7,7 @@ import { useEffect } from "react";
  */
 export default function useAutoResizeTextArea(
   textAreaRef: HTMLTextAreaElement | null,
-  dependencyArr: string[]
+  dependencyArr: string[],
 ) {
   const ref = textAreaRef;
   useEffect(() => {

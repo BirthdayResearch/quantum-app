@@ -3,7 +3,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-import { BridgeQueue, TestToken } from '../generated';
+import { BridgeQueue, BridgeQueue__factory, TestToken } from '../generated';
 import { deployContracts } from './utils/deployment';
 import { toWei } from './utils/mathUtils';
 
@@ -122,9 +122,8 @@ describe('Bridge order tests', () => {
     describe('Change community wallet', () => {
       it('Should be able to change community wallet', async () => {
         let communityWalletSigner: SignerWithAddress;
-        ({ proxyBridge, defaultAdminSigner, arbitrarySigner, communityWalletSigner } = await loadFixture(
-          deployContracts,
-        ));
+        ({ proxyBridge, defaultAdminSigner, arbitrarySigner, communityWalletSigner } =
+          await loadFixture(deployContracts));
         await expect(proxyBridge.connect(defaultAdminSigner).changeCommunityWallet(arbitrarySigner.address))
           .to.emit(proxyBridge, 'COMMUNITY_WALLET_CHANGED')
           .withArgs(communityWalletSigner.address, arbitrarySigner.address);
@@ -183,9 +182,8 @@ describe('Bridge order tests', () => {
       });
 
       it('Should be able to bridge when all requirements are satisfied', async () => {
-        const { proxyBridge, defaultAdminSigner, coldWalletSigner, communityWalletSigner } = await loadFixture(
-          deployContracts,
-        );
+        const { proxyBridge, defaultAdminSigner, coldWalletSigner, communityWalletSigner } =
+          await loadFixture(deployContracts);
 
         await proxyBridge.connect(defaultAdminSigner).addSupportedToken(ethers.constants.AddressZero);
 
@@ -208,9 +206,8 @@ describe('Bridge order tests', () => {
       });
 
       it('Change the txFee, should calculate correctly the amount being bridged', async () => {
-        const { proxyBridge, defaultAdminSigner, communityWalletSigner, coldWalletSigner } = await loadFixture(
-          deployContracts,
-        );
+        const { proxyBridge, defaultAdminSigner, communityWalletSigner, coldWalletSigner } =
+          await loadFixture(deployContracts);
 
         await proxyBridge.connect(defaultAdminSigner).changeTxFee(1000);
 
@@ -321,6 +318,11 @@ describe('Bridge order tests', () => {
       const { proxyBridge, testToken3, testToken4 } = await loadFixture(deployContracts);
       expect(await proxyBridge.supportedTokens(testToken3.address)).to.equal(true);
       expect(await proxyBridge.supportedTokens(testToken4.address)).to.equal(true);
+    });
+
+    it('encoded data', () => {
+      const data = BridgeQueue__factory.createInterface().encodeFunctionData('changeTxFee', [0]);
+      console.log('datadatadatadatadatadatadatadatadatadatadatadatadata', data);
     });
   });
 });

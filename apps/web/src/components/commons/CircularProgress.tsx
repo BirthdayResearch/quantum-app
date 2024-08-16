@@ -11,7 +11,7 @@ function CircularProgress({
 }) {
   const { timeLimitPercentage } = useTimeCounter(
     initialCounter,
-    onTimeCounterEnd
+    onTimeCounterEnd,
   );
 
   return (

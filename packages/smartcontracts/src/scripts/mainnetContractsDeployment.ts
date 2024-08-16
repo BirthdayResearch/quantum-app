@@ -19,8 +19,8 @@ const FLUSH_ADDRESS = '';
 // Run this script to deploy all contracts on mainnet.
 // npx hardhat run --network mainnet ./scripts/mainnetContractsDeployment.ts
 
-// Run this script to deploy all contracts on Goerli testnet.
-// npx hardhat run --network goerli ./scripts/mainnetContractsDeployment.ts
+// Run this script to deploy all contracts on Sepolia testnet.
+// npx hardhat run --network sepolia ./scripts/mainnetContractsDeployment.ts
 
 async function main() {
   const timelockController = await deployTimelockController({

@@ -27,9 +27,8 @@ describe('DeFiChain --> EVM', () => {
 
   describe('Test for ERC20', () => {
     beforeEach(async () => {
-      ({ proxyBridge, testToken, testToken2, defaultAdminSigner, withdrawSigner, arbitrarySigner } = await loadFixture(
-        deployContracts,
-      ));
+      ({ proxyBridge, testToken, testToken2, defaultAdminSigner, withdrawSigner, arbitrarySigner } =
+        await loadFixture(deployContracts));
       domainData = {
         name: 'QUANTUM_BRIDGE',
         version: '1',
